@@ -1,40 +1,30 @@
 import streamlit as st
 import openai
-
-openai.api_key = st.secrets["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"]
-from dotenv import load_dotenv
 import os
-import openai
+from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load .env for local development
 load_dotenv()
-openai.api_key = os.getenv("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")
 
-# Streamlit app interface
+# Use key from Streamlit secrets (deployed) or .env (local)
+openai.api_key = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY"))
+
 st.set_page_config(page_title="Autopitch App", page_icon="📧")
-st.title("🎤 Autopitch - AI-Powered Email Pitch Generator")
+st.title("🎤 Autopitch — AI‑Powered Email Pitch Generator")
 
-# Text input for product or service
-product_description = st.text_area("Describe your product/service:")
+product_description = st.text_area("Describe your product or service:")
 
-# Generate button
 if st.button("Generate Pitch"):
     if not product_description:
         st.warning("Please enter a description of your product.")
     else:
-        with st.spinner("Generating your pitch..."):
+        with st.spinner("Generating your pitch…"):
             try:
                 response = openai.ChatCompletion.create(
-                    model="gpt-4",
+                    model="gpt-3.5-turbo",
                     messages=[
-                        {
-                            "role": "system",
-                            "content": "You are a helpful assistant that writes concise, engaging sales pitch emails based on product descriptions."
-                        },
-                        {
-                            "role": "user",
-                            "content": f"Write a short and professional email pitch for the following product: {product_description}"
-                        }
+                        {"role": "system", "content": "You are an assistant writing a concise, engaging email pitch."},
+                        {"role": "user", "content": f"Write a short, professional email pitch for the following product: {product_description}"}
                     ],
                     temperature=0.7,
                     max_tokens=300
