@@ -1,4 +1,7 @@
 import streamlit as st
+import openai
+
+openai.api_key = st.secrets["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"]
 from dotenv import load_dotenv
 import os
 import openai
