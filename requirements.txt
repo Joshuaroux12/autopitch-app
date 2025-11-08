@@ -2,3 +2,4 @@ streamlit==1.50.0
 openai==2.7.1
 pandas==2.3.3
 python-dotenv
+openai==0.28
